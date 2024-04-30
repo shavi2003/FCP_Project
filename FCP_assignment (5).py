@@ -20,7 +20,9 @@ class Network:
             self.nodes = nodes 
 
 	def get_mean_degree(self):
-		#Your code  for task 3 goes here
+		total_degree = sum(len(node.connections) for node in self.nodes)
+        	get_mean_degree = total_degree / len(self.nodes)
+        	return get_mean_degree
 
 	def get_mean_clustering(self):
 		#Your code for task 3 goes here
