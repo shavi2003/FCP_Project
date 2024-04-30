@@ -25,8 +25,20 @@ class Network:
         	return get_mean_degree
 
 	def get_mean_clustering(self):
-		#Your code for task 3 goes here
-
+		total_clustering_coefficient = 0
+        	for node in self.nodes:
+            		neighbors = [self.nodes[idx] for idx, connection in enumerate(node.connections) if connection == 1]
+            		if len(neighbors) < 2:
+                		continue
+            		possible_connections = (len(neighbors) * (len(neighbors) - 1)) / 2
+            		actual_connections = sum(sum(
+                		self.nodes[nidx].connections[nnidx] for nnidx in range(nidx + 1, len(neighbors)) if
+                		self.nodes[nidx].connections[nnidx] == 1) for nidx in range(len(neighbors)))
+            		clustering_coefficient = actual_connections / possible_connections
+            		total_clustering_coefficient += clustering_coefficient
+        	get_mean_clustering = total_clustering_coefficient / len(self.nodes)
+        	return get_mean_clustering
+	
 	def get_mean_path_length(self):
 		#Your code for task 3 goes here
 
