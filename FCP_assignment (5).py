@@ -40,7 +40,21 @@ class Network:
         	return get_mean_clustering
 	
 	def get_mean_path_length(self):
-		#Your code for task 3 goes here
+		total_path_length = 0
+        	num_paths = 0
+        	for source_node in self.nodes.values():
+            		if sum(source_node.connections.values()) == 0:
+                		continue
+            		path_lengths = []
+            		for target_index, connection in source_node.connections.items():
+                		if connection == 1:
+                    			path_lengths.append(nx.shortest_path_length(self.to_networkx_graph(), source=source_node.number, target=target_index))
+            			total_path_length += sum(path_lengths)
+            			num_paths += len(path_lengths)
+        		if num_paths == 0:
+            			return float('inf')
+        		get_mean_path_length = total_path_length / num_paths
+        		return get_mean_path_length
 
 	def make_random_network(self, N, connection_probability):
 		'''
