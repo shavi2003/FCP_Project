@@ -310,8 +310,8 @@ def main():
         mean_degree = network.get_mean_degree()
         mean_path_length = network.get_mean_path_length()
         mean_clustering = network.get_mean_clustering()
-        print(f"Mean degree: {mean_degree}")
-        print(f"Mean path length: {mean_path_length}")
+        print(f"Mean_degree: {mean_degree}")
+        print(f"Mean_path_length: {mean_path_length}")
         print(f"Clustering coefficient: {mean_clustering}")
 
 if __name__ == "__main__":
