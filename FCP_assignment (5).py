@@ -76,15 +76,32 @@ class Network:
 
 	def make_ring_network(self, N, neighbour_range=1):
 		#Your code  for task 4 goes here
+        ring_network = nx.Graph()
+        for i in range(N):
+            for j in range(1, neighbour_range + 1):
+                ring_network.add_edge(i, (i + j) % N)
+                ring_network.add_edge(i, (i - j) % N)
+        return ring_network
 
 	def make_small_world_network(self, N, re_wire_prob=0.2):
 		#Your code for task 4 goes here
+		ring_network = self.make_ring_network(N)
+                for edge in ring_network.edges():
+                     if random.random() < re_wire_prob:
+                        ring_network.remove_edge(*edge)
+                        new_destination = random.choice(list(ring_network.nodes()))
+                        while new_destination == edge[0] or ring_network.has_edge(edge[0], new_destination):
+                             new_destination = random.choice(list(ring_network.nodes()))
+                        ring_network.add_edge(edge[0], new_destination)
+                     return ring_network
 
 	def plot(self):
 
 		fig = plt.figure()
 		ax = fig.add_subplot(111)
 		ax.set_axis_off()
+
+
 
 		num_nodes = len(self.nodes)
 		network_radius = num_nodes * 10
