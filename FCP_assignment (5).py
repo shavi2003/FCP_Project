@@ -318,13 +318,77 @@ This section contains code for the Defuant Model - task 2 in the assignment
 ==============================================================================================================
 '''
 
-def defuant_main():
-	#Your code for task 2 goes here
+class Node:
+    def __init__(self, value, number):
+        self.index = number
+        self.value = value
 
-def test_defuant():
-	#Your code for task 2 goes here
+class Network:
+    def __init__(self, nodes=None):
+        if nodes is None:
+            self.nodes = []
+        else:
+            self.nodes = nodes
 
+    def update_opinions(self, T, beta):
+        i = np.random.randint(0, len(self.nodes))
+        # Neighbors in a 1D grid (periodic boundary conditions)
+        j = (i + 1) % len(self.nodes) if np.random.rand() > 0.5 else (i - 1) % len(self.nodes)
 
+        if abs(self.nodes[i].value - self.nodes[j].value) < T:
+            mean_value = (self.nodes[i].value + self.nodes[j].value) / 2
+            self.nodes[i].value += beta * (mean_value - self.nodes[i].value)
+            self.nodes[j].value += beta * (mean_value - self.nodes[j].value)
+
+    def plot(self, timesteps):
+        # Plot evolution of opinions over time
+        plt.figure(figsize=(10, 5))
+        for t, timestep in enumerate(timesteps):
+            plt.scatter([t] * len(timestep), timestep, c='blue', s=1)
+        plt.xlabel("Time")
+        plt.ylabel("Opinion")
+        plt.title("Evolution of Opinions Over Time")
+        plt.show()
+
+        # Plot final distribution
+        plt.figure()
+        plt.hist(timesteps[-1], bins=30, color='blue', alpha=0.7)
+        plt.title("Final Distribution of Opinions")
+        plt.xlabel("Opinion")
+        plt.ylabel("Frequency")
+        plt.show()
+
+def simulate_deffuant(N, num_iterations, beta, T):
+    nodes = [Node(np.random.rand(), i) for i in range(N)]
+    network = Network(nodes)
+    timesteps = []
+
+    for _ in range(num_iterations):
+        network.update_opinions(T, beta)
+        timesteps.append([node.value for node in network.nodes])
+
+    network.plot(timesteps)
+
+def deffuant_main():
+    parser = argparse.ArgumentParser(description="Simulate Opinion Dynamics")
+    parser.add_argument("-deffuant", action="store_true", help="Run Deffuant model")
+    parser.add_argument("-beta", type=float, default=0.2, help="Set beta value for Deffuant model")
+    parser.add_argument("-threshold", type=float, default=0.2, help="Set threshold value for Deffuant model")
+    parser.add_argument("-test_deffuant", action="store_true", help="Run tests for Deffuant model")
+    args = parser.parse_args()
+
+    if args.deffuant:
+        simulate_deffuant(100, 1000, args.beta, args.threshold)
+    if args.test_deffuant:
+        test_deffuant()
+
+def test_deffuant():
+    # Placeholder for actual test implementation
+    print("Testing Deffuant model...")
+    # Implement tests based on the expectations described
+
+if __name__ == "__deffuant_main__":
+    deffuant_main()
 '''
 ==============================================================================================================
 This section contains code for the main function- you should write some code for handling flags here
