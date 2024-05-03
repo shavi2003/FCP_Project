@@ -95,6 +95,26 @@ class Network:
                              new_destination = random.choice(list(ring_network.nodes()))
                         ring_network.add_edge(edge[0], new_destination)
                      return ring_network
+	def main():
+	    parser = argparse.ArgumentParser(description='Generate different types of networks.')
+            parser.add_argument('-ring_network', type=int, help='Create a ring network with specified size')
+            parser.add_argument('-small_world', type=int, help='Create a small-worlds network with specified size')
+            parser.add_argument('-re_wire', type=float, default=0.2, help='Rewiring probability for small-worlds network')
+            parser.add_argument('-show_plot', action='store_true', help='Display the generated network plot')
+            args = parser.parse_args()
+            if args.ring_network:
+               ring_network = create_ring_network(args.ring_network, range=2)  # Default range of 2 for ring network
+               if args.show_plot:
+                  nx.draw(ring_network, with_labels=True)
+                  plt.title('Ring Network')
+                  plt.show()
+
+            if args.small_world:
+               small_world_network = create_small_world_network(args.small_world, range=2, rewire_prob=args.re_wire)
+               if args.show_plot:
+                  nx.draw(small_world_network, with_labels=True)
+                  plt.title('Small World Network')
+                  plt.show()
 
 	def plot(self):
 
