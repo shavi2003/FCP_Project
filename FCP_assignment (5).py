@@ -40,30 +40,6 @@ class Network:
             		total_clustering_coefficient += clustering_coefficient
         	get_mean_clustering = total_clustering_coefficient / len(self.nodes)
         	return get_mean_clustering
-def main():
-    parser = argparse.ArgumentParser(description="Network Simulation")
-    parser.add_argument("-network", type=int, help="Create and plot a network of size N")
-    parser.add_argument("-test_networks", action="store_true", help="Run test functions")
-
-    args = parser.parse_args()
-
-    if args.test_networks:
-        test_networks()
-
-    if args.network:
-        N = args.network
-        network = Network()
-        network.make_random_network(N, connection_probability=0.5)  # You can adjust the connection probability as needed
-        network.plot()
-        mean_degree = network.get_mean_degree()
-        mean_path_length = network.get_mean_path_length()
-        mean_clustering = network.get_mean_clustering()
-        print(f"Mean_degree: {mean_degree}")
-        print(f"Mean_path_length: {mean_path_length}")
-        print(f"Clustering coefficient: {mean_clustering}")
-
-if __name__ == "__main__":
-    main()
 	
 	def get_mean_path_length(self):
 		total_path_length = 0
@@ -80,7 +56,7 @@ if __name__ == "__main__":
         		if num_paths == 0:
             			return float('inf')
         		get_mean_path_length = total_path_length / num_paths
-        		return get_mean_path_length
+        	return get_mean_path_length
 
 	def make_random_network(self, N, connection_probability):
 		'''
@@ -120,7 +96,7 @@ if __name__ == "__main__":
                         while new_destination == edge[0] or ring_network.has_edge(edge[0], new_destination):
                              new_destination = random.choice(list(ring_network.nodes()))
                         ring_network.add_edge(edge[0], new_destination)
-                     return ring_network
+                     	return ring_network
 	def main():
 	    parser = argparse.ArgumentParser(description='Generate different types of networks.')
             parser.add_argument('-ring_network', type=int, help='Create a ring network with specified size')
