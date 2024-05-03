@@ -190,9 +190,24 @@ def calculate_agreement(population, row, col, external=0.0):
 			change_in_agreement (float)
 	'''
 
-	#Your code for task 1 goes here
+	n_rows, n_cols = population.shape
+    agreement = 0
+    current_value = population[row, col]
+    neighbors = [
+        (row - 1) % n_rows, col,  # North
+        (row + 1) % n_rows, col,  # South
+        row, (col - 1) % n_cols,  # West
+        row, (col + 1) % n_cols   # East
+    ]
 
-	return np.random * population
+    for i in range(0, len(neighbors), 2):
+        neighbor_value = population[neighbors[i], neighbors[i+1]]
+        agreement += current_value * neighbor_value
+
+    # Adding external influence
+    agreement += external * current_value
+
+    return agreement
 
 def ising_step(population, external=0.0):
 	'''
@@ -202,15 +217,19 @@ def ising_step(population, external=0.0):
 	'''
 	
 	n_rows, n_cols = population.shape
-	row = np.random.randint(0, n_rows)
-	col  = np.random.randint(0, n_cols)
+    	for _ in range(n_rows * n_cols):  # Iterate through each cell once per step
+        	row = np.random.randint(n_rows)
+        	col = np.random.randint(n_cols)
+        	agreement = calculate_agreement(population, row, col, external)
+        
+        	# Flip logic: if agreement is negative, flip the cell
+        	if agreement < 0:
+            		population[row, col] *= -1
+        	elif agreement == 0:  # If agreement is zero, flip based on temperature
+           		if np.random.random() < np.exp(-alpha):
+                 		population[row, col] *= -1
 
-	agreement = calculate_agreement(population, row, col, external=0.0)
-
-	if agreement < 0:
-		population[row, col] *= -1
-
-	#Your code for task 1 goes here
+    	return population
 
 def plot_ising(im, population):
 	'''
